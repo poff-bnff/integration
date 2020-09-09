@@ -10,257 +10,183 @@ require('dotenv').config()
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
+//app.event('app_home_opened', ({ event, say }) => {
+//   say(`Tere hommikust, <@${event.user}>!`);
+//});
 
-app.message("help", ({ message, say }) => {
-  //<@${message.user}>!
-  say(`kirjuta vestlusesse
-  poff - pöffi lehe ehitamiseks
-  veel ei tööta
-  (just - justi lehtede ehitamiseks)
-  (industry - industry lehtede ehitamiseks)
-  (shorts - shortsi lehtede ehitamiseks)
-  (kinoff - kinoffi lehtede ehitamiseks)
-nupu vajutamise käivitab lehe ehitamise vastvasse serverisse, mis võtab aega kuni 5 minutit
-# integrations channelist saad näha kui ehitamine on õnnestunud`);
-});
+app.event("app_home_opened", async ({ event, context }) => {
+  try {
+    /* view.publish is the method that your app uses to push a view to the Home tab */
+    const result = await app.client.views.publish({
+      /* retrieves your xoxb token from context */
+      token: context.botToken,
+      /* the user that opened your app's app home */
+      user_id: event.user,
 
-app.message("poff", async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "PÖFF-i eelvaate (poff_staging.inscaping.eu) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita PÖFF staging",
-            emoji: true,
+      /* the view object that appears in the app home*/
+      view: {
+        type: "home",
+        blocks: [
+          {
+            type: "header",
+            text: {
+              type: "plain_text",
+              text: "PÖFF ",
+              emoji: true
+            }
           },
-          action_id: "staging_poff",
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "DEV-i (dev.inscaping.eu) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita dev",
-            emoji: true,
+          {
+            type: "actions",
+            elements: [
+              {
+                type: "button",
+                action_id: "test",
+                text: {
+                  type: "plain_text",
+                  text: "Ehita eelvaade",
+                  emoji: true
+                },
+                confirm: {
+                  title: {
+                    type: "plain_text",
+                    text: "Kas oled kindel?"
+                  },
+                  text: {
+                    type: "mrkdwn",
+                    text: "manuaalne.yml"
+                  },
+                  confirm: {
+                    type: "plain_text",
+                    text: "Jah"
+                  },
+                  deny: {
+                    type: "plain_text",
+                    text: "Ei"
+                  }
+                }
+              },
+
+              {
+                type: "button",
+                action_id: "test2",
+                text: {
+                  type: "plain_text",
+                  text: "Ehita live",
+                  emoji: true
+                },
+                confirm: {
+                  title: {
+                    type: "plain_text",
+                    text: "Kas oled kindel?"
+                  },
+                  text: {
+                    type: "mrkdwn",
+                    text: "poff.ee domeenile värske infoga lehe ehitamine"
+                  },
+                  confirm: {
+                    type: "plain_text",
+                    text: "Jah"
+                  },
+                  deny: {
+                    type: "plain_text",
+                    text: "Ei"
+                  }
+                }
+              }
+            ]
           },
-          action_id: "dev_poff",
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "PÖFF live-i (poff_live.inscaping.eu) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita PÖFF live",
-            emoji: true,
-          },
-          action_id: "live_poff",
-        },
-      },
-    ],
-  });
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text:
+                "Eelvaade on <https://poff.staging.ee|siin.> Live leht on <https://poff.ee|siin.> "
+            }
+          }
+        ]
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
-app.message("just", async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "JUSTFILM-i eelvaate (staging.justfilm.ee) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita JUSTFILM-i eelvaade",
-            emoji: true,
-          },
-          action_id: "staging_justfilm",
-        },
-      },
-    ],
-  });
+//workspace T01A76UKPKN
+//channel C01A11E0D8S
+
+let makingBotsForSlackChannel = "C01A11E0D8S";
+let messagesChatChannel = "D019Y8U2361"
+
+app.action("test", async ({ ack, payload, body, context, action, client }) => {
+  // Acknowledge the action
+  await ack();
+  //console.log(`${body.user.username} vajutas ${payload.text.text} (action: ${payload.action_id}) nuppu`);
+  try {
+    // Call chat.postMessage with the built-in client
+    const result = await client.chat.postMessage({
+      token: context.botToken,
+      channel: messagesChatChannel,
+      //text: `${body.user.username} vajutas ${payload.text.text} (action: ${payload.action_id}) nuppu`
+      text: `${action.confirm.text.text} käivitatud.`
+      
+    });
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+  Workflow.Start("manuaalne.yml", "DeploymentTest")
+
 });
 
-app.message("industry", async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "INDUSTRY eelvaate (staging.industry.poff.ee) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita INDUSTRY eelvaade",
-            emoji: true,
-          },
-          action_id: "staging_industry",
-        },
-      },
-    ],
-  });
+app.action("test2", async ({ ack, payload, body, context, action }) => {
+  // Acknowledge the action
+  await ack();
+  //selle vastuse peaks saatma siis kui github saadab vastuse
+  console.log(
+    `${body.user.name} vajutas ${payload.text.text} (action: ${payload.action_id}) nuppu`
+  );
+
+  //Workflow.Start("manuaalne.yml", "master")
+
+  //  await say(`<@${body.user.id}> clicked the button`);
 });
 
-app.message("shorts", async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "SHORTS-i eelvaate (staging.shorts.poff.ee) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita SHORTS-i eelvaade",
-            emoji: true,
-          },
-          action_id: "staging_shorts",
-        },
-      },
-    ],
-  });
-});
-
-app.message("kinoff", async ({ message, say }) => {
-  // say() sends a message to the channel where the event was triggered
-  await say({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "KINOFF eelvaate (staging.kinoff.ee) ehitamiseks ->",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Ehita KINOFF eelvaade",
-            emoji: true,
-          },
-          action_id: "staging_kinoff",
-        },
-      },
-    ],
-  });
-});
-
-app.action("staging_poff", async ({ action, ack, respond }) => {
-  await ack();
-  Workflow.Start("manuaalne.yml", "master");
-  //StartWorkflow("staging_poff.yaml", "staging_poff");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://poff_staging.inscaping.eu/"
-  );
-});
-app.action("dev_poff", async ({ action, ack, respond }) => {
-  await ack();
-  Workflow.Start("manuaalne.yml", "master");
-  //StartWorkflow("main.yml", "master");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://dev.inscaping.eu/"
-  );
-});
-app.action("live_poff", async ({ action, ack, respond }) => {
-  await ack();
-  Workflow.Start("manuaalne.yml", "master");
-  //StartWorkflow("stage_2_live_poff.yml", "staging_poff");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://poff_live.inscaping.eu/"
-  );
-});
-
-app.action("staging_justfilm", async ({ action, ack, respond }) => {
-  await ack();
-  //StartWorkflow("staging_justfilm.yaml", "staging_justfilm");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.justfilm.ee"
-  );
-});
-app.action("staging_industry", async ({ action, ack, respond }) => {
-  await ack();
-  //StartWorkflow("staging_industry.yaml", "staging_industry");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.industry.poff.ee"
-  );
-});
-app.action("staging_shorts", async ({ action, ack, respond }) => {
-  await ack();
-  //StartWorkflow("staging_shorts.yaml", "staging_shorts");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.shorts.poff.ee"
-  );
-});
-app.action("staging_kinoff", async ({ action, ack, respond }) => {
-  await ack();
-  //StartWorkflow("staging_kinoff.yml", "staging_kinoff");
-  await respond(
-    "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.kinoff.ee"
-  );
-});
+// channel: D019Y8U2361
 
 app.message("joke", async ({ message, say, payload, body, context }) => {
   //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  console.log(say);
-  Jokes.Chuck(async function log(joke) {
-    await say(joke);
-  });
+  console.log(say)
+  Jokes.Chuck(async function log(joke){
+       await say(joke)
+  })
 });
 app.message("momma", async ({ message, say, payload, body, context }) => {
   //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  console.log(say);
-  Jokes.Momma(async function log(joke) {
-    await say(joke);
-  });
+  console.log(say)
+  Jokes.Momma(async function log(joke){
+       await say(joke)
+  })
 });
 app.message("dad", async ({ message, say, payload, body, context }) => {
   //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  console.log(say);
-  Jokes.Dad(async function log(joke) {
-    await say(joke);
-  });
+  console.log(say)
+  Jokes.Dad(async function log(joke){
+       await say(joke)
+  })
 });
 app.message("ron", async ({ message, say, payload, body, context }) => {
   //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  console.log(say);
-  Jokes.Ron(async function log(joke) {
-    await say(`Ron Swanson: "${joke}"`);
-  });
+  console.log(say)
+  Jokes.Ron(async function log(joke){
+       await say(`Ron Swanson: "${joke}"`)
+  })
 });
+
+
+
 
 (async () => {
   // Start your app
