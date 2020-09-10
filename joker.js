@@ -123,9 +123,9 @@ function ronSaid(CBfunction) {
     });
     req.end();
 }
-function Joker(joke) {
-    console.log(joke);
-}
+// function Joker(joke) {
+//     console.log(joke);
+// }
 
 //chuckJoke(Joker);
 //dadJoke(Joker);
