@@ -5,7 +5,7 @@
   "main": "functions/server.js",
   "scripts": {
     "build": "netlify-lambda build express",
-    "start": "nodemon app.js"
+    "start": "nodemon app2.js"
   },
   "dependencies": {
     "@slack/bolt": "^2.3.0",
