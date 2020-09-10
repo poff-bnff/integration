@@ -2,7 +2,7 @@
   "name": "slack-app",
   "version": "0.0.1",
   "description": "Deploy site to server trough github from Slack",
-  "main": "app.js",
+  "main": "functions/server.js",
   "scripts": {
     "build": "netlify-lambda build express",
     "start": "nodemon app.js"
@@ -12,13 +12,15 @@
     "dotenv": "^8.2.0",
     "netlify-lambda": "^2.0.1",
     "nodemon": "^2.0.4",
-    "serverless-http": "^2.5.0"
+    "serverless-http": "^2.5.0",
+    "express": "^4.17.1"
   },
   "engines": {
     "node": "11.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/bolt-app-template"
+    "type": "git",
+    "url": "git+https://github.com/poff-bnff/integration.git"
   },
   "license": "MIT",
   "keywords": [
