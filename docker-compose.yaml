@@ -9,3 +9,6 @@ services:
         environment:
             NODE_ENV: production
             PORT: 80
+            SLACK_BOT_TOKEN:
+            SLACK_SIGNING_SECRET:
+            GITHUB_TOKEN:
