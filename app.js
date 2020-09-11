@@ -48,49 +48,89 @@ function OneAction(buttonText, actionId, modalText, chatChannel) {
 }
 
 function makeHeader(HeaderText) {
-  let header ={
-        type: "header",
-        text: {
-          type: "plain_text",
-          text: HeaderText,
-          emoji: true
-        }
-      }
+  let header = {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: HeaderText,
+      emoji: true
+    }
+  };
   return header;
 }
 
 app.event("app_home_opened", async ({ event, context }) => {
-    let viewObject = {
+  let viewObject = {
     type: "home",
     blocks: [
-      makeHeader("PÖFF")
-      ,
+      makeHeader("PÖFF"),
       {
         type: "actions",
         elements: [
-          OneAction("Pöff STAGING", "staging_poff", "poff_staging.inscaping.eu ehitamine", event.channel),
-          OneAction("Pöff LIVE", "live_poff", "poff_live.inscaping.eu ehitamine", event.channel)
+          OneAction(
+            "Pöff STAGING",
+            "staging_poff",
+            "staging.poff.inscaping.eu/ ehitamine",
+            event.channel
+          ),
+          OneAction(
+            "Pöff LIVE",
+            "live_poff",
+            "poff.inscaping.eu/ ehitamine",
+            event.channel
+          )
         ]
       },
-      makeHeader("JUST")
-      ,
+      makeHeader("JUSTFILM"),
       {
         type: "actions",
         elements: [
-          OneAction("Just STAGING", "staging_just", "staging.poff.just.ee ehitamine", event.channel),
-          OneAction("Just LIVE", "live_just", "poff.just.ee ehitamine", event.channel)
+          OneAction(
+            "Justfilm STAGING",
+            "staging_just",
+            "staging.justfilm.inscaping.eu/ ehitamine",
+            event.channel
+          ),
+          OneAction(
+            "Justfilm LIVE",
+            "live_just",
+            "justfilm.inscaping.eu/ ehitamine",
+            event.channel
+          )
         ]
       },
-      makeHeader("SHORTS")
-      ,
+      makeHeader("SHORTS"),
       {
         type: "actions",
         elements: [
-          OneAction("Shorts STAGING", "staging_shorts", "staging.poff.shorts.ee ehitamine", event.channel),
-          OneAction("Shorts LIVE", "live_shorts", "poff.shorts.ee ehitamine", event.channel)
+          OneAction(
+            "Shorts STAGING",
+            "staging_shorts",
+            "staging.shorts.inscaping.eu/ ehitamine",
+            event.channel
+          ),
+          OneAction(
+            "Shorts LIVE",
+            "live_shorts",
+            "shorts.inscaping.eu/ ehitamine",
+            event.channel
+          )
         ]
       },
-          
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: 'Alguses STAGING -> vaata üle, kui kõik on õige, siis LIVE.'
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: 'Ütle "help" vestluses, et saada rohkem infot'
+        }
+      }
     ]
   };
   try {
@@ -117,38 +157,55 @@ function buttonAction(action_id, workflow, branch) {
     try {
       const result = await client.chat.postMessage({
         channel: messagesChannel,
-        text: `${action.confirm.text.text} võtab aega kuni 5 minutit.`
+        text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`
       });
     } catch (error) {
       console.error(error);
     }
 
-    //Workflow.Start("manuaalne.yml", "DeploymentTest")
-    //Workflow.Start(workflow, branch)
-    //StartWorkflow("staging_poff.yaml", "staging_poff");
+    Workflow.Start(workflow, branch);
 
     //kui workflow on lõpetanud siis kirjuta uuesti äppi
   });
 }
 
+//https://dev.inscaping.eu/
 
-buttonAction("staging_poff", "manuaalne.yml", "DeploymentTest");
-buttonAction("live_poff", "manuaalne.yml", "DeploymentTest");
+//https://staging.poff.inscaping.eu/
+//
 
-buttonAction("staging_just", "manuaalne.yml", "DeploymentTest");
-buttonAction("live_just", "manuaalne.yml", "DeploymentTest");
+buttonAction("staging_poff", "staging_poff.yml", "staging_poff");
+buttonAction("live_poff", "stage_2_live_poff.yml", "staging_poff");
 
-buttonAction("staging_shorts", "manuaalne.yml", "DeploymentTest");
-buttonAction("live_shorts", "manuaalne.yml", "DeploymentTest");
+buttonAction("staging_just", "staging_justfilm.yml", "staging_justfilm");
+buttonAction("live_just", "stage_2_live_justfilm.yml", "staging_justfilm");
+
+buttonAction("staging_shorts", "staging_shorts.yml", "staging_shorts");
+buttonAction("live_shorts", "stage_2_live_shorts.yml", "staging_shorts");
 
 app.message("help", ({ message, say }) => {
   //<@${message.user}>!
   say(`
-nupu vajutamise käivitab lehe ehitamise vastavale domeenile, mis võtab aega kuni 5 minutit
+Home sektsioon:
 
-# integrations channelist saad näha kui ehitamine on õnnestunud
+STAGING nupu vajutamisel:
+  - tõmmatakse Strapist värske info
+  - ehitatakse vastav leht 
 
-Kui sul on ootamise ajal igav, siis bot räägib nalju kui küsid joke, dad või momma. :)`);
+LIVE nupu vajutamisel
+  - ehitatakse live domeenile see, mis on stagingus
+
+Selleks, et värkse info Strapist live lehele jõuaks peab alati ehitama alguses stagingu ja alles siis live-i.
+
+Kui leht on valmis tuleb teadaanne # integrations channelisse. Ehitamine võib võtta aega kuni 5 minutit. 
+
+Kui # integration channeli teadaanne anna märku ebaõnnestumisest võta ühendust arendajatega. 
+
+# integration channel on avalik -> sõnumeid näevad kõik, kes seal on
+
+Messages tab siin on privaatne ainult sina ja deployBot näete.
+
+Kui sul on ootamise ajal igav, siis deployBot räägib nalju kui küsid joke, dad või momma. :)`);
 });
 
 app.message("joke", async ({ message, say, payload, body, context }) => {
