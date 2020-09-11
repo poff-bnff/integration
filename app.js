@@ -128,7 +128,7 @@ app.event("app_home_opened", async ({ event, context }) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: 'Ütle "help" vestluses, et saada rohkem infot'
+          text: 'Kirjuta "help" vestluses, et saada rohkem infot'
         }
       }
     ]
