@@ -1,0 +1,10 @@
+version: '3'
+services:
+    slackapp:
+        build:
+            context: https://github.com/poff-bnff/integration.git
+        container_name: slackapp
+        command: node app.js
+        restart: always
+        environment:
+            PORT: 80
