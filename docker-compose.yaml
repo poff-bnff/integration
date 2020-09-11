@@ -2,7 +2,7 @@ version: '3'
 services:
     slackapp:
         build:
-            context: https://github.com/poff-bnff/integration.git
+            context: https://github.com/poff-bnff/slackapp.git
         container_name: slackapp
         command: node /usr/src/slackapp/app.js
         restart: always

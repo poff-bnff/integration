@@ -14,7 +14,7 @@
     "node": "11.x"
   },
   "repository": {
-    "url": "git+https://github.com/poff-bnff/integration.git"
+    "url": "git+https://github.com/poff-bnff/slackapp.git"
   },
   "license": "MIT",
   "keywords": [
