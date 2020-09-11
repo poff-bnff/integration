@@ -166,13 +166,10 @@ function buttonAction(action_id, workflow, branch) {
     Workflow.Start(workflow, branch);
 
     //kui workflow on lõpetanud siis kirjuta uuesti äppi
+    //käivitab workflow github-is ja hakkab kuulama
+    //github saadab actioni lõpus post päringu ja selle peale saadab äpp messagesChennelisse sõnumi
   });
 }
-
-//https://dev.inscaping.eu/
-
-//https://staging.poff.inscaping.eu/
-//
 
 buttonAction("staging_poff", "staging_poff.yml", "staging_poff");
 buttonAction("live_poff", "stage_2_live_poff.yml", "staging_poff");
