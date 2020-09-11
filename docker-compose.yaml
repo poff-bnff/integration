@@ -4,7 +4,7 @@ services:
         build:
             context: https://github.com/poff-bnff/integration.git
         container_name: slackapp
-        command: node app.js
+        command: node /usr/src/slackapp/app.js
         restart: always
         environment:
             NODE_ENV: production
