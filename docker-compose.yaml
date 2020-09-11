@@ -7,4 +7,5 @@ services:
         command: node app.js
         restart: always
         environment:
+            NODE_ENV: production
             PORT: 80
