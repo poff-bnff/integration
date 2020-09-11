@@ -15,16 +15,6 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
-app.message("help", ({ message, say }) => {
-  //<@${message.user}>!
-  say(`
-nupu vajutamise käivitab lehe ehitamise vastvasse serverisse, mis võtab aega kuni 5 minutit
-
-# integrations channelisse tuleb teadaanne kui ehitamine on õnnestunud
-
-Kui sul on ootamise ajal igav, siis bot räägib nalju kui küsid joke, dad või momma. :)`);
-});
-
 function OneAction(buttonText, actionId, modalText, chatChannel) {
   let OneAction = {
     type: "button",
@@ -69,7 +59,6 @@ function makeHeader(HeaderText) {
   return header;
 }
 
-
 app.event("app_home_opened", async ({ event, context }) => {
     let viewObject = {
     type: "home",
@@ -79,9 +68,26 @@ app.event("app_home_opened", async ({ event, context }) => {
       {
         type: "actions",
         elements: [
-          OneAction("Pöff DEV", "dev_poff", "dev.inscaping.eu ehitamine", event.channel),
           OneAction("Pöff STAGING", "staging_poff", "poff_staging.inscaping.eu ehitamine", event.channel),
           OneAction("Pöff LIVE", "live_poff", "poff_live.inscaping.eu ehitamine", event.channel)
+        ]
+      },
+      makeHeader("JUST")
+      ,
+      {
+        type: "actions",
+        elements: [
+          OneAction("Just STAGING", "staging_just", "staging.poff.just.ee ehitamine", event.channel),
+          OneAction("Just LIVE", "live_just", "poff.just.ee ehitamine", event.channel)
+        ]
+      },
+      makeHeader("SHORTS")
+      ,
+      {
+        type: "actions",
+        elements: [
+          OneAction("Shorts STAGING", "staging_shorts", "staging.poff.shorts.ee ehitamine", event.channel),
+          OneAction("Shorts LIVE", "live_shorts", "poff.shorts.ee ehitamine", event.channel)
         ]
       },
           
@@ -118,6 +124,7 @@ function buttonAction(action_id, workflow, branch) {
     }
 
     //Workflow.Start("manuaalne.yml", "DeploymentTest")
+    //Workflow.Start(workflow, branch)
     //StartWorkflow("staging_poff.yaml", "staging_poff");
 
     //kui workflow on lõpetanud siis kirjuta uuesti äppi
@@ -126,38 +133,23 @@ function buttonAction(action_id, workflow, branch) {
 
 
 buttonAction("staging_poff", "manuaalne.yml", "DeploymentTest");
-buttonAction("dev_poff", "manuaalne.yml", "DeploymentTest");
 buttonAction("live_poff", "manuaalne.yml", "DeploymentTest");
 
-// app.action("staging_justfilm", async ({ action, ack, respond }) => {
-//   await ack();
-//   //StartWorkflow("staging_justfilm.yaml", "staging_justfilm");
-//   await respond(
-//     "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.justfilm.ee"
-//   );
-// });
-// app.action("staging_industry", async ({ action, ack, respond }) => {
-//   await ack();
-//   //StartWorkflow("staging_industry.yaml", "staging_industry");
-//   await respond(
-//     "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.industry.poff.ee"
-//   );
-// });
-// app.action("staging_shorts", async ({ action, ack, respond }) => {
-//   await ack();
-//   //StartWorkflow("staging_shorts.yaml", "staging_shorts");
-//   await respond(
-//     "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.shorts.poff.ee"
-//   );
-// });
-// app.action("staging_kinoff", async ({ action, ack, respond }) => {
-//   await ack();
-//   //StartWorkflow("staging_kinoff.yml", "staging_kinoff");
-//   await respond(
-//     "Eelvaate ehitamine käivitatud. Valmis lehte näed paari minuti pärast: https://staging.kinoff.ee"
-//   );
-// });
+buttonAction("staging_just", "manuaalne.yml", "DeploymentTest");
+buttonAction("live_just", "manuaalne.yml", "DeploymentTest");
 
+buttonAction("staging_shorts", "manuaalne.yml", "DeploymentTest");
+buttonAction("live_shorts", "manuaalne.yml", "DeploymentTest");
+
+app.message("help", ({ message, say }) => {
+  //<@${message.user}>!
+  say(`
+nupu vajutamise käivitab lehe ehitamise vastavale domeenile, mis võtab aega kuni 5 minutit
+
+# integrations channelist saad näha kui ehitamine on õnnestunud
+
+Kui sul on ootamise ajal igav, siis bot räägib nalju kui küsid joke, dad või momma. :)`);
+});
 
 app.message("joke", async ({ message, say, payload, body, context }) => {
   //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
