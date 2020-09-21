@@ -171,17 +171,17 @@ function buttonAction(action_id, workflow, branch) {
   });
 }
 
-buttonAction("staging_poff", "staging_poff.yml", "staging_poff");
-buttonAction("live_poff", "stage_2_live_poff.yml", "staging_poff");
 
-// buttonAction("staging_poff", "2530081", "staging_poff");
-// buttonAction("live_poff", "2471586", "staging_poff");
+buttonAction("staging_poff", "2530081", "staging_poff");
+buttonAction("live_poff", "2471586", "staging_poff");
 
 buttonAction("staging_just", "2530079", "staging_justfilm");
 buttonAction("live_just", "2471584", "staging_justfilm");
 
-buttonAction("staging_shorts", "staging_shorts.yml", "staging_shorts");
-buttonAction("live_shorts", "stage_2_live_shorts.yml", "staging_shorts");
+buttonAction("staging_shorts", "2530082", "staging_shorts");
+buttonAction("live_shorts", "2471581", "staging_shorts");
+
+//id saad pärida postmanis https://api.github.com/repos/poff-bnff/web/actions/workflows
 
 app.message("help", ({ message, say }) => {
   //<@${message.user}>!
