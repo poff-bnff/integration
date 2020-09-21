@@ -171,11 +171,14 @@ function buttonAction(action_id, workflow, branch) {
   });
 }
 
-buttonAction("staging_poff", "2530081", "staging_poff");
-buttonAction("live_poff", "2471586", "staging_poff");
+buttonAction("staging_poff", "staging_poff.yml", "staging_poff");
+buttonAction("live_poff", "stage_2_live_poff.yml", "staging_poff");
 
-buttonAction("staging_just", "staging_justfilm.yml", "staging_justfilm");
-buttonAction("live_just", "stage_2_live_justfilm.yml", "staging_justfilm");
+// buttonAction("staging_poff", "2530081", "staging_poff");
+// buttonAction("live_poff", "2471586", "staging_poff");
+
+buttonAction("staging_just", "2530079", "staging_justfilm");
+buttonAction("live_just", "2471584", "staging_justfilm");
 
 buttonAction("staging_shorts", "staging_shorts.yml", "staging_shorts");
 buttonAction("live_shorts", "stage_2_live_shorts.yml", "staging_shorts");
