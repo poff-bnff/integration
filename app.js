@@ -76,7 +76,7 @@ app.event("app_home_opened", async ({ event, context }) => {
           OneAction(
             "Pöff LIVE",
             "live_poff",
-            "poff.inscaping.eu/ ehitamine",
+            "poff.ee/ ehitamine",
             event.channel
           )
         ]
@@ -171,8 +171,8 @@ function buttonAction(action_id, workflow, branch) {
   });
 }
 
-buttonAction("staging_poff", "staging_poff.yml", "staging_poff");
-buttonAction("live_poff", "stage_2_live_poff.yml", "staging_poff");
+buttonAction("staging_poff", "2530081", "staging_poff");
+buttonAction("live_poff", "2471586", "staging_poff");
 
 buttonAction("staging_just", "staging_justfilm.yml", "staging_justfilm");
 buttonAction("live_just", "stage_2_live_justfilm.yml", "staging_justfilm");
