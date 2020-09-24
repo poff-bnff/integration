@@ -1,6 +1,6 @@
 const https = require("https");
 
-function StartWorkflow(workflow, branch) {
+function StartWorkflow(workflow, branch, user, trigger_id) {
   var options = {
     method: "POST",
     hostname: "api.github.com",
