@@ -1,8 +1,6 @@
 //AKTIIVNE APP
 // Require the Bolt package (github.com/slackapi/bolt)
-const {
-  App
-} = require("@slack/bolt");
+const { App, ExpressReceiver } = require("@slack/bolt");
 const Workflow = require("./startWorkflow.js");
 const TriggerDeploy = require("./triggerDeploy");
 const Jokes = require("./joker");
@@ -13,9 +11,14 @@ const Jokes = require("./joker");
 
 let makingBotsForSlackChannel = "C01A11E0D8S";
 
+const receiver = new ExpressReceiver({
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  endpoints: "/slack/events"
+});
+
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  receiver
 });
 
 receiver.router.post('/awshook', jsonParser, (req, res) => {
