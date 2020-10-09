@@ -13,7 +13,7 @@ const https = require("https");
 // staging-shorts
 
 
-function TriggerDeploy(target) {
+function TriggerDeploy(target, userId) {
   var options = {
     method: "POST",
     hostname: "api.poff.ee",
@@ -39,7 +39,7 @@ function TriggerDeploy(target) {
       console.error(error);
     });
   });
-  var body = JSON.stringify({ project: target, user: "userX" });
+  var body = JSON.stringify({ project: target, user: userId });
 
   req.write(body);
 
@@ -48,7 +48,7 @@ function TriggerDeploy(target) {
   console.log(target)
 }
 
-//TriggerDeploy(deployTarget)
+//TriggerDeploy("staging-poff")
 
 
 module.exports.Start = TriggerDeploy;

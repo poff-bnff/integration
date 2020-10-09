@@ -18,6 +18,12 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
 });
 
+receiver.router.post('/awshook', jsonParser, (req, res) => {
+  console.log(req.body); // Call your action on the request here
+
+  res.status(200).end(); // Responding is important
+});
+
 function OneAction(buttonText, actionId, modalText, chatChannel) {
   let OneAction = {
     type: "button",
@@ -164,10 +170,11 @@ buttonAction("staging_shorts", "2530082", "staging_shorts");
 buttonAction("live_shorts", "2471581", "staging_shorts");
 
 function newButtonAction(action_id, target) {
-  app.action(action_id, async ({action, ack, client, context}) => {
+  app.action(action_id, async ({action, ack, client, context, body}) => {
     await ack();
 
     let messagesChannel = action.value;
+    let slackUserId = body.user.id;
 
     try {
       const result = await client.chat.postMessage({
@@ -177,7 +184,7 @@ function newButtonAction(action_id, target) {
     } catch (error) {
       console.error(error);
     }
-    TriggerDeploy.Start(target);
+    TriggerDeploy.Start(target, slackUserId);
   });
 }
 
