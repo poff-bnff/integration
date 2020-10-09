@@ -30,20 +30,20 @@ const app = new App({
 receiver.router.post('/awshook', jsonParser, (req, res) => {
   console.log(req.body); // Call your action on the request here
    const integrationsChannelId = 'C018L2CV5U4';
-  (async () => {
-    try {
-  // Call chat.postMessage with the built-in client
-  const result = await client.chat.postMessage({
-    channel: integrationsChannelId,
-    text: `Test 1 2 3`
-  });
-  console.log(result);
-}
-catch (error) {
-  console.error(error);
-}
+//   (async () => {
+//     try {
+//   // Call chat.postMessage with the built-in client
+//   const result = await client.chat.postMessage({
+//     channel: integrationsChannelId,
+//     text: `Test 1 2 3`
+//   });
+//   console.log(result);
+// }
+// catch (error) {
+//   console.error(error);
+// }
 
-})();
+// })();
 
   res.status(200).end(); // Responding is important
 });
