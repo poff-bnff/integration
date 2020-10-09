@@ -5,6 +5,10 @@ const Workflow = require("./startWorkflow.js");
 const TriggerDeploy = require("./triggerDeploy");
 const Jokes = require("./joker");
 //require("dotenv").config();
+const bodyParser = require("body-parser");
+
+
+let jsonParser = bodyParser.json();
 
 //console.log(process.env.SLACK_SIGNING_SECRET)
 //console.log(process.env.SLACK_BOT_TOKEN)
