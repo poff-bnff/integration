@@ -39,7 +39,7 @@ function TriggerDeploy(target) {
       console.error(error);
     });
   });
-  var body = target;
+  var body = JSON.stringify({ project: target, user: "userX" });
 
   req.write(body);
 
