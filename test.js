@@ -1,6 +1,7 @@
 const ChannelId = 'C018L2CV5U4';
 
-  try {
+(async () => {
+      try {
     // Call chat.postMessage with the built-in client
     const result = await client.chat.postMessage({
       channel: ChannelId,
@@ -11,6 +12,10 @@ const ChannelId = 'C018L2CV5U4';
   catch (error) {
     console.error(error);
   }
+
+  })();
+
+
 
 // {
 //   id: '',
