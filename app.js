@@ -6,7 +6,7 @@ const {
 const Workflow = require("./startWorkflow.js");
 const TriggerDeploy = require("./triggerDeploy");
 const Jokes = require("./joker");
-require("dotenv").config();
+//require("dotenv").config();
 
 //console.log(process.env.SLACK_SIGNING_SECRET)
 //console.log(process.env.SLACK_BOT_TOKEN)

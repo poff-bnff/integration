@@ -12,3 +12,4 @@ services:
             SLACK_BOT_TOKEN:
             SLACK_SIGNING_SECRET:
             GITHUB_TOKEN:
+            AWS_TOKEN:
