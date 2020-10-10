@@ -30,20 +30,33 @@ const app = new App({
 receiver.router.post('/awshook', jsonParser, (req, res) => {
   console.log(req.body); // Call your action on the request here
    const integrationsChannelId = 'C018L2CV5U4';
-//   (async () => {
-//     try {
-//   // Call chat.postMessage with the built-in client
-//   const result = await client.chat.postMessage({
-//     channel: integrationsChannelId,
-//     text: `Test 1 2 3`
-//   });
-//   console.log(result);
-// }
-// catch (error) {
-//   console.error(error);
-// }
 
-// })();
+   let user
+  if(req.body.user){
+    user = `<@${req.body.user}>`
+  }else{
+    user = "arendaja"
+  }
+  let d = new Date(req.body.startTime);
+  let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
+  let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
+  let success =[ "ebaõnnestunult", "edukalt"]
+  // console.log(d.getDay())
+console.log(`${days[d.getDay()]} ${d.getDate()}.${months[d.getMonth()]} kell ${d.getHours()}:${d.getMinutes()}`);
+  
+  console.log("saadan slacki sõnumi")
+  
+  try {
+    const result = await app.client.chat.postMessage({
+      token: process.env.SLACK_BOT_TOKEN,
+      channel: integrationsChannelId,
+      text: `${user} ehitas ${days[d.getDay()]} ${d.getDate()}.${months[d.getMonth()]} kell ${d.getHours()}:${d.getMinutes()} ${req.body.domain} ${success[req.body.succeeding]}`
+    });
+        console.log(result);
+  }
+  catch (error) {
+    console.error(error);
+  }
 
   res.status(200).end(); // Responding is important
 });
