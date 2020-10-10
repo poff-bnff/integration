@@ -27,7 +27,7 @@ const app = new App({
 
 
 
-receiver.router.post('/awshook', jsonParser, (req, res) => {
+receiver.router.post('/awshook', jsonParser, async (req, res) => {
   console.log(req.body); // Call your action on the request here
    const integrationsChannelId = 'C018L2CV5U4';
    let user
