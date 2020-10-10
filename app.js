@@ -30,27 +30,28 @@ const app = new App({
 receiver.router.post('/awshook', jsonParser, (req, res) => {
   console.log(req.body); // Call your action on the request here
    const integrationsChannelId = 'C018L2CV5U4';
-
    let user
   if(req.body.user){
     user = `<@${req.body.user}>`
   }else{
     user = "arendaja"
   }
+
   let d = new Date(req.body.startTime);
+  let time = `kell ${d.getHours()}:${d.getMinutes()}`;
   let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
   let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
   let success =[ "ebaõnnestunult", "edukalt"]
-  // console.log(d.getDay())
-console.log(`${days[d.getDay()]} ${d.getDate()}.${months[d.getMonth()]} kell ${d.getHours()}:${d.getMinutes()}`);
-  
-  console.log("saadan slacki sõnumi")
+  let commitLink = `https://github.com/poff-bnff/web/commit/${req.body.commit}`;
+  console.log(commitLink)
+  let siteType = req.body.id.split("-")[0];
+  console.log(siteType)
   
   try {
     const result = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: integrationsChannelId,
-      text: `${user} ehitas ${days[d.getDay()]} ${d.getDate()}.${months[d.getMonth()]} kell ${d.getHours()}:${d.getMinutes()} ${req.body.domain} ${success[req.body.succeeding]}`
+      text: `${user} ehitas kell ${time} ${req.body.domain} ${success[req.body.succeeding]}`
     });
         console.log(result);
   }

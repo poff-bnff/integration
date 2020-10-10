@@ -12,34 +12,18 @@ let data= {
   "succeeding": 0
 }
 
+let siteType = data.id.split("-")[0]
+let site = data.id.split("-")[1].split(":")[0]
+console.log(siteType, site)
+
 // tee date-iks
 let timestamp = 1602260490903
-
-
-date = new Date (timestamp * 1000)
-var newDate = new Date();
-newDate.setTime(timestamp*1000);
-dateString = newDate.toUTCString();
-//console.log(dateString)
-//console.log(date)
-datevalues = [
-   date.getFullYear(),
-   date.getMonth()+1,
-   date.getDate(),
-   date.getHours(),
-   date.getMinutes(),
-   date.getSeconds(),
-];
-//console.log(datevalues)
 
 var date = new Date(timestamp);
 let year = date.getFullYear()
 let month = ("0" + (date.getMonth() + 1)).slice(-2)
 let day = ("0" + date.getDate()).slice(-2)
 
-var fdate = date.getFullYear() + '/' + ("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2);
-
-console.log(fdate);
 console.log(`${day}.${month}.${year}`)
 
 let d = new Date(timestamp);
