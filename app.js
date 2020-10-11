@@ -25,39 +25,34 @@ const app = new App({
   receiver
 });
 
-let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
-let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
-let success =[ "ebaõnnestunult", "edukalt"]
+// let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
+// let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
+// let success =[ "ebaõnnestunult", "edukalt"]
 
 
-receiver.router.post('/awshook', jsonParser, async (req, res) => {
+receiver.router.post('/hook', jsonParser, async (req, res) => {
   console.log(req.body); // Call your action on the request here
    const integrationsChannelId = 'C018L2CV5U4';
-   let user
-  if(req.body.user){
-    user = `<@${req.body.user}>`
-  }else{
-    user = "arendaja"
-  }
-  let d = new Date(req.body.startTime);
-  let time = `${d.getHours()}:${d.getMinutes()}`;
-
-  let commitLink = `https://github.com/poff-bnff/web/commit/${req.body.commit}`;
-  console.log(commitLink)
-  let siteType = req.body.id.split("-")[0];
-  console.log(siteType)
-  
-  try {
-    const result = await app.client.chat.postMessage({
-      token: process.env.SLACK_BOT_TOKEN,
-      channel: integrationsChannelId,
-      text: `${user} ehitas ${time} ${siteType}.${req.body.domain} ${success[req.body.succeeding]}`
-    });
-        console.log(result);
-  }
-  catch (error) {
-    console.error(error);
-  }
+   let commitLink = `https://github.com/poff-bnff/web/commit/${req.body.commit}`
+   let user 
+   if (req.body.data.slackUserId ===""){
+     user = "arendaja"
+   }else {
+     user = req.body.data.slackUserId
+   }
+   let event = req.body.event
+   
+   try {
+   const result = await app.client.chat.postMessage({
+     token: process.env.SLACK_BOT_TOKEN,
+     channel: integrationsChannelId,
+     text: `<@${user}> ehitas ${req.body.workflow}`
+   });
+       //console.log(result);
+ }
+ catch (error) {
+   console.error(error);
+ }
 
   res.status(200).end(); // Responding is important
 });
@@ -155,7 +150,7 @@ app.event("app_home_opened", async ({
       {
         type: "actions",
         elements: [
-          OneAction("TEST poff_staging", "stag_poff", "Testime AWS deploy-d", event.channel),
+          OneAction("TEST", "test", "Testin teadaannet", event.channel),
         ],
       },
     ],
@@ -176,25 +171,20 @@ app.event("app_home_opened", async ({
 });
 
 function buttonAction(action_id, workflow, branch) {
-  app.action(action_id, async ({action, ack, client, context}) => {
+  app.action(action_id, async ({action, ack, client, context, body}) => {
     await ack();
-
+    //nupu vajutaja vestluskanal 
     let messagesChannel = action.value;
-
-    try {
-      const result = await client.chat.postMessage({
-        channel: messagesChannel,
-        text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-
-    Workflow.Start(workflow, branch);
-
-    //kui workflow on lõpetanud siis kirjuta uuesti äppi
-    //käivitab workflow github-is ja hakkab kuulama
-    //github saadab actioni lõpus post päringu ja selle peale saadab äpp messagesChennelisse sõnumi
+    let slackUserId = body.user.id;
+    // try {
+    //   const result = await client.chat.postMessage({
+    //     channel: messagesChannel,
+    //     text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    Workflow.Start(workflow, branch, slackUserId);
   });
 }
 
@@ -207,26 +197,28 @@ buttonAction("live_just", "2471584", "staging_justfilm");
 buttonAction("staging_shorts", "2530082", "staging_shorts");
 buttonAction("live_shorts", "2471581", "staging_shorts");
 
-function newButtonAction(action_id, target) {
-  app.action(action_id, async ({action, ack, client, context, body}) => {
-    await ack();
+buttonAction("test", "2381766", "DeploymentTest");
 
-    let messagesChannel = action.value;
-    let slackUserId = body.user.id;
+// function newButtonAction(action_id, target) {
+//   app.action(action_id, async ({action, ack, client, context, body}) => {
+//     await ack();
 
-    try {
-      const result = await client.chat.postMessage({
-        channel: messagesChannel,
-        text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    TriggerDeploy.Start(target, slackUserId);
-  });
-}
+//     let messagesChannel = action.value;
+//     let slackUserId = body.user.id;
 
-newButtonAction("stag_poff", "staging-poff");
+//     try {
+//       const result = await client.chat.postMessage({
+//         channel: messagesChannel,
+//         text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
+//       });
+//     } catch (error) {
+//       console.error(error);
+//     }
+//     TriggerDeploy.Start(target, slackUserId);
+//   });
+// }
+
+// newButtonAction("stag_poff", "staging-poff");
 
 //id saad pärida postmanis https://api.github.com/repos/poff-bnff/web/actions/workflows
 
