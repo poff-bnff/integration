@@ -25,6 +25,9 @@ const app = new App({
   receiver
 });
 
+let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
+let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
+let success =[ "ebaõnnestunult", "edukalt"]
 
 
 receiver.router.post('/awshook', jsonParser, async (req, res) => {
@@ -36,12 +39,9 @@ receiver.router.post('/awshook', jsonParser, async (req, res) => {
   }else{
     user = "arendaja"
   }
-
   let d = new Date(req.body.startTime);
-  let time = `kell ${d.getHours()}:${d.getMinutes()}`;
-  let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
-  let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
-  let success =[ "ebaõnnestunult", "edukalt"]
+  let time = `${d.getHours()}:${d.getMinutes()}`;
+
   let commitLink = `https://github.com/poff-bnff/web/commit/${req.body.commit}`;
   console.log(commitLink)
   let siteType = req.body.id.split("-")[0];
@@ -51,7 +51,7 @@ receiver.router.post('/awshook', jsonParser, async (req, res) => {
     const result = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: integrationsChannelId,
-      text: `${user} ehitas kell ${time} ${req.body.domain} ${success[req.body.succeeding]}`
+      text: `${user} ehitas ${time} ${siteType}.${req.body.domain} ${success[req.body.succeeding]}`
     });
         console.log(result);
   }
@@ -155,7 +155,7 @@ app.event("app_home_opened", async ({
       {
         type: "actions",
         elements: [
-          OneAction("TEST poff_staging", "stag_poff", "Testime kas AWS deploy-d", event.channel),
+          OneAction("TEST poff_staging", "stag_poff", "Testime AWS deploy-d", event.channel),
         ],
       },
     ],

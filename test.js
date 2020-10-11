@@ -32,3 +32,4 @@ let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil
 // console.log(d.getDay())
 console.log(`${days[d.getDay()]} ${d.getDate()}.${months[d.getMonth()]} kell ${d.getHours()}:${d.getMinutes()}`);
 
+// to invite your bot to channel /invite @BOT_NAME
