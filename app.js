@@ -2,6 +2,7 @@
 // Require the Bolt package (github.com/slackapi/bolt)
 const { App, ExpressReceiver } = require("@slack/bolt");
 const Workflow = require("./startWorkflow.js");
+const newWorkflow = require("./startNewWorkflow.js");
 const TriggerDeploy = require("./triggerDeploy");
 const Jokes = require("./joker");
 //require("dotenv").config();
@@ -176,15 +177,33 @@ function buttonAction(action_id, workflow, branch) {
     //nupu vajutaja vestluskanal 
     let messagesChannel = action.value;
     let slackUserId = body.user.id;
-    // try {
-    //   const result = await client.chat.postMessage({
-    //     channel: messagesChannel,
-    //     text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    Workflow.Start(workflow, branch, slackUserId);
+    try {
+      const result = await client.chat.postMessage({
+        channel: messagesChannel,
+        text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    Workflow.Start(workflow, branch);
+  });
+}
+
+function newButtonAction(action_id, workflow, branch) {
+  app.action(action_id, async ({action, ack, client, context, body}) => {
+    await ack();
+    //nupu vajutaja vestluskanal 
+    let messagesChannel = action.value;
+    let slackUserId = body.user.id;
+    try {
+      const result = await client.chat.postMessage({
+        channel: messagesChannel,
+        text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    newWorkflow.Start(workflow, branch, slackUserId);
   });
 }
 
@@ -197,7 +216,7 @@ buttonAction("live_just", "2471584", "staging_justfilm");
 buttonAction("staging_shorts", "2530082", "staging_shorts");
 buttonAction("live_shorts", "2471581", "staging_shorts");
 
-buttonAction("test", "2381766", "DeploymentTest");
+newButtonAction("test", "2381766", "DeploymentTest");
 
 // function newButtonAction(action_id, target) {
 //   app.action(action_id, async ({action, ack, client, context, body}) => {
