@@ -122,7 +122,7 @@ app.event("app_home_opened", async ({
         type: "actions",
         elements: [
           OneAction("Justfilm STAGING", "staging_just", "staging.justfilm.inscaping.eu/ ehitamine", event.channel),
-          OneAction("Justfilm LIVE", "live_just", "justfilm.poff.ee ehitamine", event.channel),
+          OneAction("Justfilm LIVE", "live_just", "justfilm.ee ehitamine", event.channel),
         ],
       },
       makeHeader("SHORTS"),
