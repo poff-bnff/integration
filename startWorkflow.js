@@ -30,7 +30,7 @@ function StartWorkflow(workflow, branch, slackUser) {
     });
   });
 
-  var postData = JSON.stringify({ ref: branch, inputs: {user: SlackUserId} });
+  var postData = JSON.stringify({ ref: branch, inputs: {user: slackUser} });
 
   req.write(postData);
 
