@@ -114,7 +114,7 @@ app.event("app_home_opened", async ({
         type: "actions",
         elements: [
           OneAction("Pöff STAGING", "staging_poff", "staging.poff.inscaping.eu/ ehitamine", event.channel),
-          OneAction("Pöff LIVE", "live_poff", "poff.ee/ ehitamine", event.channel),
+          OneAction("Pöff LIVE", "live_poff", "poff.ee ehitamine", event.channel),
         ],
       },
       makeHeader("JUSTFILM"),
@@ -122,7 +122,7 @@ app.event("app_home_opened", async ({
         type: "actions",
         elements: [
           OneAction("Justfilm STAGING", "staging_just", "staging.justfilm.inscaping.eu/ ehitamine", event.channel),
-          OneAction("Justfilm LIVE", "live_just", "justfilm.inscaping.eu/ ehitamine", event.channel),
+          OneAction("Justfilm LIVE", "live_just", "justfilm.poff.ee ehitamine", event.channel),
         ],
       },
       makeHeader("SHORTS"),
@@ -130,7 +130,7 @@ app.event("app_home_opened", async ({
         type: "actions",
         elements: [
           OneAction("Shorts STAGING", "staging_shorts", "staging.shorts.inscaping.eu/ ehitamine", event.channel),
-          OneAction("Shorts LIVE", "live_shorts", "shorts.inscaping.eu/ ehitamine", event.channel),
+          OneAction("Shorts LIVE", "live_shorts", "shorts.poff.ee ehitamine", event.channel),
         ],
       },
       {
