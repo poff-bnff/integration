@@ -1,20 +1,14 @@
-//AKTIIVNE APP
-// Require the Bolt package (github.com/slackapi/bolt)
 const { App, ExpressReceiver } = require("@slack/bolt");
 const Workflow = require("./startWorkflow.js");
 const newWorkflow = require("./startNewWorkflow.js");
-const TriggerDeploy = require("./triggerDeploy");
 const Jokes = require("./joker");
 //require("dotenv").config();
 const bodyParser = require("body-parser");
-
 
 let jsonParser = bodyParser.json();
 
 //console.log(process.env.SLACK_SIGNING_SECRET)
 //console.log(process.env.SLACK_BOT_TOKEN)
-
-let makingBotsForSlackChannel = "C01A11E0D8S";
 
 const receiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -26,37 +20,91 @@ const app = new App({
   receiver
 });
 
-// let days = ["esmaspäeval", "teisipäeval", "kolmapäeval", "neljapäeval", "reedel", "laupäeval", "pühapäeval"]
-// let months = ["jaanuaril", "veebruaril", "märtsil", "aprillil", "mail", "juunil", "juulil", "augusil", "septembril", "oktoobril", "novembril", "detsembril"];
-// let success =[ "ebaõnnestunult", "edukalt"]
+const integrationsChannelId = "C018L2CV5U4"; //siia saada kõik teated
+const failChannel = "C01CACTJW6S"; //siia kõik failinud deploy actonid
+
+// see kuulab post päringuid ja
+function listenToDeploy() {
+  receiver.router.post("/hook", jsonParser, async (req, res) => {
+    console.log(req.body.status, req.body.user, req.body.channel);
+    let status = req.body.status;
+
+    // Kõik lähevad integrations channelisse
+    try {
+      const result = await app.client.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: integrationsChannelId,
+        text: req.body.text,
+        attachments: req.body.attachments
+      });
+      //console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+
+    //ainult failid lähevad failChannelisse
+    if (status === "fail") {
+      try {
+        const result = await app.client.chat.postMessage({
+          token: process.env.SLACK_BOT_TOKEN,
+          channel: failChannel,
+          text: req.body.text,
+          attachments: req.body.attachments
+        });
+        //console.log(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    //slacki kasutaja nupu vajutusel käima läinud workflow lõpust tevitatakse vajutajat
+    //ainult siis kui kasutaja ja channel on slacki-ile omasel kujul
+    if (req.body.channel.startsWith("D") && req.body.user.startsWith("U")) {
+      try {
+        const result = await app.client.chat.postMessage({
+          token: process.env.SLACK_BOT_TOKEN,
+          channel: req.body.channel,
+          text: req.body.PM
+        });
+        //console.log(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    res.status(200).end(); // Responding is important
+  });
+}
+
+listenToDeploy();
 
 
-receiver.router.post('/hook', jsonParser, async (req, res) => {
-  console.log(req.body); // Call your action on the request here
-   const integrationsChannelId = 'C018L2CV5U4';
-   let commitLink = `https://github.com/poff-bnff/web/commit/${req.body.commit}`
-   let user 
-   if (req.body.data.slackUserId ===""){
-     user = "arendaja"
-   }else {
-     user = req.body.data.slackUserId
-   }
-   let event = req.body.event
+// receiver.router.post('/hook', jsonParser, async (req, res) => {
+//   console.log(req.body); // Call your action on the request here
+//    const integrationsChannelId = 'C018L2CV5U4';
+//    let commitLink = `https://github.com/poff-bnff/web/commit/${req.body.commit}`
+//    let user 
+//    if (req.body.data.slackUserId ===""){
+//      user = "arendaja"
+//    }else {
+//      user = req.body.data.slackUserId
+//    }
+//    let event = req.body.event
    
-   try {
-   const result = await app.client.chat.postMessage({
-     token: process.env.SLACK_BOT_TOKEN,
-     channel: integrationsChannelId,
-     text: `<@${user}> ehitas ${req.body.workflow}`
-   });
-       //console.log(result);
- }
- catch (error) {
-   console.error(error);
- }
+//    try {
+//    const result = await app.client.chat.postMessage({
+//      token: process.env.SLACK_BOT_TOKEN,
+//      channel: integrationsChannelId,
+//      text: `<@${user}> ehitas ${req.body.workflow}`
+//    });
+//        //console.log(result);
+//  }
+//  catch (error) {
+//    console.error(error);
+//  }
 
-  res.status(200).end(); // Responding is important
-});
+//   res.status(200).end(); // Responding is important
+// });
 
 function OneAction(buttonText, actionId, modalText, chatChannel) {
   let OneAction = {
