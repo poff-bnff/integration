@@ -253,6 +253,7 @@ function newButtonAction(action_id, workflow, branch) {
       console.error(error);
     }
     newWorkflow.Start(workflow, branch, slackUserId, messagesChannel);
+    console.log("workflow dispatch event triggered")
   });
 }
 
