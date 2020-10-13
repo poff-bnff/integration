@@ -27,51 +27,52 @@ const failChannel = "C01CACTJW6S"; //siia kõik failinud deploy actonid
 function listenToDeploy() {
   receiver.router.post("/hook", jsonParser, async (req, res) => {
     console.log("incoming....")
-    console.log(req.body.status, req.body.user, req.body.channel);
-    let status = req.body.status;
+    console.log(req.body)
+    // console.log(req.body.status, req.body.user, req.body.channel);
+    // let status = req.body.status;
 
-    // Kõik lähevad integrations channelisse
-    try {
-      const result = await app.client.chat.postMessage({
-        token: process.env.SLACK_BOT_TOKEN,
-        channel: integrationsChannelId,
-        text: req.body.text,
-        attachments: req.body.attachments
-      });
-      //console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
+    // // Kõik lähevad integrations channelisse
+    // try {
+    //   const result = await app.client.chat.postMessage({
+    //     token: process.env.SLACK_BOT_TOKEN,
+    //     channel: integrationsChannelId,
+    //     text: req.body.text,
+    //     attachments: req.body.attachments
+    //   });
+    //   //console.log(result);
+    // } catch (error) {
+    //   console.error(error);
+    // }
 
-    //ainult failid lähevad failChannelisse
-    if (status === "fail") {
-      try {
-        const result = await app.client.chat.postMessage({
-          token: process.env.SLACK_BOT_TOKEN,
-          channel: failChannel,
-          text: req.body.text,
-          attachments: req.body.attachments
-        });
-        //console.log(result);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    // //ainult failid lähevad failChannelisse
+    // if (status === "fail") {
+    //   try {
+    //     const result = await app.client.chat.postMessage({
+    //       token: process.env.SLACK_BOT_TOKEN,
+    //       channel: failChannel,
+    //       text: req.body.text,
+    //       attachments: req.body.attachments
+    //     });
+    //     //console.log(result);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
     
-    //slacki kasutaja nupu vajutusel käima läinud workflow lõpust tevitatakse vajutajat
-    //ainult siis kui kasutaja ja channel on slacki-ile omasel kujul
-    if (req.body.channel.startsWith("D") && req.body.user.startsWith("U")) {
-      try {
-        const result = await app.client.chat.postMessage({
-          token: process.env.SLACK_BOT_TOKEN,
-          channel: req.body.channel,
-          text: req.body.PM
-        });
-        //console.log(result);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    // //slacki kasutaja nupu vajutusel käima läinud workflow lõpust tevitatakse vajutajat
+    // //ainult siis kui kasutaja ja channel on slacki-ile omasel kujul
+    // if (req.body.channel.startsWith("D") && req.body.user.startsWith("U")) {
+    //   try {
+    //     const result = await app.client.chat.postMessage({
+    //       token: process.env.SLACK_BOT_TOKEN,
+    //       channel: req.body.channel,
+    //       text: req.body.PM
+    //     });
+    //     //console.log(result);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
 
     res.status(200).end(); // Responding is important
   });
@@ -326,6 +327,5 @@ app.message("ron", async ({say}) => {
 (async () => {
   // Start your app
   await app.start(process.env.PORT || 3000);
-
   console.log("⚡️ Bolt app is running!");
 })();
