@@ -253,7 +253,7 @@ function newButtonAction(action_id, workflow, branch) {
       console.error(error);
     }
     newWorkflow.Start(workflow, branch, slackUserId, messagesChannel);
-    console.log("workflow dispatch event triggered")
+    console.log("outgoing....")
   });
 }
 
@@ -267,27 +267,6 @@ buttonAction("staging_shorts", "2530082", "staging_shorts");
 buttonAction("live_shorts", "2471581", "staging_shorts");
 
 newButtonAction("test", "2381766", "DeploymentTest");
-
-// function newButtonAction(action_id, target) {
-//   app.action(action_id, async ({action, ack, client, context, body}) => {
-//     await ack();
-
-//     let messagesChannel = action.value;
-//     let slackUserId = body.user.id;
-
-//     try {
-//       const result = await client.chat.postMessage({
-//         channel: messagesChannel,
-//         text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
-//       });
-//     } catch (error) {
-//       console.error(error);
-//     }
-//     TriggerDeploy.Start(target, slackUserId);
-//   });
-// }
-
-// newButtonAction("stag_poff", "staging-poff");
 
 //id saad pärida postmanis https://api.github.com/repos/poff-bnff/web/actions/workflows
 
