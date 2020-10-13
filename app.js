@@ -26,6 +26,7 @@ const failChannel = "C01CACTJW6S"; //siia kõik failinud deploy actonid
 // see kuulab post päringuid ja
 function listenToDeploy() {
   receiver.router.post("/hook", jsonParser, async (req, res) => {
+    console.log("incoming....")
     console.log(req.body.status, req.body.user, req.body.channel);
     let status = req.body.status;
 
@@ -251,7 +252,7 @@ function newButtonAction(action_id, workflow, branch) {
     } catch (error) {
       console.error(error);
     }
-    newWorkflow.Start(workflow, branch, slackUserId);
+    newWorkflow.Start(workflow, branch, slackUserId, messagesChannel);
   });
 }
 

@@ -1,6 +1,6 @@
 const https = require("https");
 
-function StartWorkflow(workflow, branch, slackUser) {
+function StartWorkflow(workflow, branch, slackUserId, messagesChannel) {
   var options = {
     method: "POST",
     hostname: "api.github.com",
@@ -30,7 +30,7 @@ function StartWorkflow(workflow, branch, slackUser) {
     });
   });
 
-  var postData = JSON.stringify({ ref: branch, inputs: {user: slackUser} });
+  var postData = JSON.stringify({ ref: branch, inputs: {slackUserId: slackUserId, privateChannel: messagesChannel} });
 
   req.write(postData);
 
