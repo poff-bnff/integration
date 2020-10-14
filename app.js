@@ -169,13 +169,13 @@ app.event("app_home_opened", async ({
           text: 'Kirjuta "help" vestluses, et saada rohkem infot',
         },
       },
-      makeHeader("TEST (ära palun vajuta)"),
-      {
-        type: "actions",
-        elements: [
-          OneAction("TEST", "test", "Testin teadaannet", event.channel),
-        ],
-      },
+      // makeHeader("TEST (ära palun vajuta)"),
+      // {
+      //   type: "actions",
+      //   elements: [
+      //     OneAction("TEST", "test", "Testin teadaannet", event.channel),
+      //   ],
+      // },
     ],
   };
   try {
@@ -246,7 +246,7 @@ newButtonAction("live_shorts", "2471581", "staging_shorts");
 // buttonAction("staging_shorts", "2530082", "staging_shorts");
 // buttonAction("live_shorts", "2471581", "staging_shorts");
 
-newButtonAction("test", "2381766", "DeploymentTest");
+// newButtonAction("test", "2381766", "DeploymentTest");
 
 //id saad pärida postmanis https://api.github.com/repos/poff-bnff/web/actions/workflows
 
