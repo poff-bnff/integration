@@ -33,6 +33,7 @@ function StartWorkflow(workflow, branch, slackUserId, messagesChannel) {
   var postData = JSON.stringify({ ref: branch, inputs: {slackUserId: slackUserId, privateChannel: messagesChannel} });
 
   req.write(postData);
+  console.log(postData)
 
   req.end();
 }

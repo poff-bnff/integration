@@ -9,6 +9,7 @@ let jsonParser = bodyParser.json();
 
 //console.log(process.env.SLACK_SIGNING_SECRET)
 //console.log(process.env.SLACK_BOT_TOKEN)
+//fail channel, integration channel, webhook to github secrets???
 
 const receiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -227,6 +228,7 @@ function newButtonAction(action_id, workflow, branch) {
     }
     newWorkflow.Start(workflow, branch, slackUserId, messagesChannel);
     console.log("outgoing....")
+    console.log(workflow)
   });
 }
 
