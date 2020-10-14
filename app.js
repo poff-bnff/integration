@@ -207,6 +207,7 @@ function buttonAction(action_id, workflow, branch) {
       console.error(error);
     }
     Workflow.Start(workflow, branch);
+    console.log("old buttonAction pressed")
   });
 }
 
