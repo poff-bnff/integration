@@ -45,7 +45,7 @@ function listenToDeploy() {
     }
 
     //ainult failid lähevad failChannelisse
-    if (status === "fail") {
+    if (status === "failure") {
       try {
         const result = await app.client.chat.postMessage({
           token: process.env.SLACK_BOT_TOKEN,
