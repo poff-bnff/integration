@@ -259,10 +259,10 @@ newButtonAction("live_shorts", "2471581", "staging_shorts");
 //ESIALGSED
 
 newButtonAction("staging_industry", "2530078", "Kinoff-and-Industry");
-//newButtonAction("live_industry", "", "Kinoff-and-Industry");
+//newButtonAction("live_industry", "2471583", "Kinoff-and-Industry");
 
 newButtonAction("staging_kinoff", "2530080", "Kinoff-and-Industry");
-//newButtonAction("live_kinoff", "", "Kinoff-and-Industry");
+//newButtonAction("live_kinoff", "2471585", "Kinoff-and-Industry");
 
 // buttonAction("staging_just", "2530079", "staging_justfilm");
 // buttonAction("live_just", "2471584", "staging_justfilm");
