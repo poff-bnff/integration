@@ -168,7 +168,7 @@ app.event("app_home_opened", async ({
         type: "actions",
         elements: [
           OneAction("Kinoff STAGING", "staging_kinoff", "staging.kinoff.inscaping.eu ehitamine", event.channel),
-          //OneAction("Kinoff LIVE", "live_kinoff", "kinoff.ee ehitamine", event.channel),
+          OneAction("Kinoff LIVE", "live_kinoff", "kinoff.poff.ee ehitamine", event.channel),
         ],
       },
       {
@@ -262,7 +262,7 @@ newButtonAction("staging_industry", "2530078", "staging_industry");
 //newButtonAction("live_industry", "2471583", "staging_industry");
 
 newButtonAction("staging_kinoff", "2530080", "staging_kinoff");
-//newButtonAction("live_kinoff", "2471585", "staging_kinoff");
+newButtonAction("live_kinoff", "2471585", "staging_kinoff");
 
 
 // newButtonAction("test", "2381766", "DeploymentTest");
