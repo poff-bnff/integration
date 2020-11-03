@@ -1,7 +1,6 @@
 const { App, ExpressReceiver } = require("@slack/bolt");
 const Workflow = require("./startWorkflow.js");
 const newWorkflow = require("./startNewWorkflow.js");
-const Jokes = require("./joker");
 //require("dotenv").config();
 const bodyParser = require("body-parser");
 
@@ -288,38 +287,7 @@ Kui # integration channeli teadaanne anna märku ebaõnnestumisest võta ühendu
 
 # integration channel on avalik -> sõnumeid näevad kõik, kes seal on
 
-Messages tab siin on privaatne ainult sina ja deployBot näete.
-
-Kui sul on ootamise ajal igav, siis deployBot räägib nalju kui küsid joke, dad või momma. :)`);
-});
-
-app.message("joke", async ({say}) => {
-  //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  //console.log(say);
-  Jokes.Chuck(async function log(joke) {
-    await say(joke);
-  });
-});
-app.message("momma", async ({say}) => {
-  //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  // console.log(say);
-  Jokes.Momma(async function log(joke) {
-    await say(joke);
-  });
-});
-app.message("dad", async ({say}) => {
-  //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  // console.log(say);
-  Jokes.Dad(async function log(joke) {
-    await say(joke);
-  });
-});
-app.message("ron", async ({say}) => {
-  //await say(`Kas tahad nalja kuulda <@${message.user}>?`);
-  console.log(say);
-  Jokes.Ron(async function log(joke) {
-    await say(`Ron Swanson: "${joke}"`);
-  });
+Messages tab siin on privaatne ainult sina ja deployBot näete.`);
 });
 
 (async () => {
