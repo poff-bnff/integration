@@ -159,7 +159,7 @@ app.event("app_home_opened", async ({
         type: "actions",
         elements: [
           OneAction("Industry STAGING", "staging_industry", "staging.industry.inscaping.eu ehitamine", event.channel),
-          //OneAction("Industry LIVE", "live_industry", "industry.poff.ee ehitamine", event.channel),
+          OneAction("Industry LIVE", "live_industry", "industry.poff.ee ehitamine", event.channel),
         ],
       },
       makeHeader("KINOFF"),
@@ -255,10 +255,8 @@ newButtonAction("live_just", "2471584", "staging_justfilm");
 newButtonAction("staging_shorts", "2530082", "staging_shorts");
 newButtonAction("live_shorts", "2471581", "staging_shorts");
 
-//ESIALGSED
-
 newButtonAction("staging_industry", "2530078", "staging_industry");
-//newButtonAction("live_industry", "2471583", "staging_industry");
+newButtonAction("live_industry", "2471583", "staging_industry");
 
 newButtonAction("staging_kinoff", "2530080", "staging_kinoff");
 newButtonAction("live_kinoff", "2471585", "staging_kinoff");
