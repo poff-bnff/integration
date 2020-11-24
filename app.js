@@ -22,6 +22,32 @@ const app = new App({
 
 const integrationsChannelId = "C018L2CV5U4"; //siia saada kõik teated
 const failChannel = "C01CACTJW6S"; //siia kõik failinud deploy actonid
+const AWSchannelId = 'C01FEF4QKMH' // siia kõik AWS-ist tulev jma
+
+// see kuulab post päringuid ja
+function listenToAWS() {
+  receiver.router.post("/AWStoSLACK", jsonParser, async (req, res) => {
+    console.log("incoming from AWS....")
+    console.log(req.body)
+    //let status = req.body.status;
+    // Kõik lähevad integrations channelisse
+    try {
+      const result = await app.client.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: AWSchannelId,
+        text: req.body.text,
+        attachments: req.body.attachments
+      });
+      //console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+    res.status(200).end(); // Responding is important
+  });
+}
+
+listenToAWS()
+
 
 // see kuulab post päringuid ja
 function listenToDeploy() {
