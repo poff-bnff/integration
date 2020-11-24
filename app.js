@@ -36,7 +36,6 @@ function listenToAWS() {
         token: process.env.SLACK_BOT_TOKEN,
         channel: AWSchannelId,
         text: req.body.text,
-        attachments: req.body.attachments
       });
       //console.log(result);
     } catch (error) {
