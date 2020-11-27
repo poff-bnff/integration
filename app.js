@@ -313,6 +313,7 @@ Kui # integration channeli teadaanne anna märku ebaõnnestumisest võta ühendu
 Messages tab siin on privaatne ainult sina ja deployBot näete.`);
 });
 
+
 (async () => {
   // Start your app
   await app.start(process.env.PORT || 3003);
