@@ -316,6 +316,7 @@ Messages tab siin on privaatne ainult sina ja deployBot näete.`);
 
 (async () => {
   // Start your app
-  await app.start(process.env.PORT || 3003);
-  console.log("⚡️ Bolt app is running!");
+  const port = process.env.PORT || 3003
+  await app.start(port);
+  console.log("⚡️ Bolt app is running at", port);
 })();
