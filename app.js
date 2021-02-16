@@ -82,19 +82,21 @@ function listenToDeploy() {
         console.error(error);
       }
     }
-    
+
     //slacki kasutaja nupu vajutusel käima läinud workflow lõpust tevitatakse vajutajat
     //ainult siis kui kasutaja ja channel on slacki-ile omasel kujul
-    if (req.body.channel.startsWith("D") && req.body.user.startsWith("U")) {
-      try {
-        const result = await app.client.chat.postMessage({
-          token: process.env.SLACK_BOT_TOKEN,
-          channel: req.body.channel,
-          text: req.body.PM
-        });
-        //console.log(result);
-      } catch (error) {
-        console.error(error);
+    if (req.body.channel && req.body.user){
+      if (req.body.channel.startsWith("D") && req.body.user.startsWith("U")) {
+        try {
+          const result = await app.client.chat.postMessage({
+            token: process.env.SLACK_BOT_TOKEN,
+            channel: req.body.channel,
+            text: req.body.PM
+          });
+          //console.log(result);
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
 
@@ -236,7 +238,7 @@ app.event("app_home_opened", async ({
 function buttonAction(action_id, workflow, branch) {
   app.action(action_id, async ({action, ack, client, context, body}) => {
     await ack();
-    //nupu vajutaja vestluskanal 
+    //nupu vajutaja vestluskanal
     let messagesChannel = action.value;
     let slackUserId = body.user.id;
     try {
@@ -255,7 +257,7 @@ function buttonAction(action_id, workflow, branch) {
 function newButtonAction(action_id, workflow, branch) {
   app.action(action_id, async ({action, ack, client, context, body}) => {
     await ack();
-    //nupu vajutaja vestluskanal 
+    //nupu vajutaja vestluskanal
     let messagesChannel = action.value;
     let slackUserId = body.user.id;
     try {
@@ -271,20 +273,35 @@ function newButtonAction(action_id, workflow, branch) {
   });
 }
 
-newButtonAction("staging_poff", "2530081", "staging_poff");
-newButtonAction("live_poff", "2471586", "staging_poff");
+newButtonAction("staging_poff", "5828091", "staging_poff");
+newButtonAction("live_poff", "5828086", "staging_poff");
 
-newButtonAction("staging_just", "2530079", "staging_justfilm");
-newButtonAction("live_just", "2471584", "staging_justfilm");
+newButtonAction("staging_just", "5828089", "staging_justfilm");
+newButtonAction("live_just", "5828084", "staging_justfilm");
 
-newButtonAction("staging_shorts", "2530082", "staging_shorts");
-newButtonAction("live_shorts", "2471581", "staging_shorts");
+newButtonAction("staging_shorts", "5828092", "staging_shorts");
+newButtonAction("live_shorts", "5828087", "staging_shorts");
 
-newButtonAction("staging_industry", "2530078", "staging_industry");
-newButtonAction("live_industry", "2471583", "staging_industry");
+newButtonAction("staging_industry", "5828088", "staging_industry");
+newButtonAction("live_industry", "5828083", "staging_industry");
 
-newButtonAction("staging_kinoff", "2530080", "staging_kinoff");
-newButtonAction("live_kinoff", "2471585", "staging_kinoff");
+newButtonAction("staging_kinoff", "5828090", "staging_kinoff");
+newButtonAction("live_kinoff", "5828085", "staging_kinoff");
+
+// newButtonAction("staging_poff", "2530081", "staging_poff");
+// newButtonAction("live_poff", "2471586", "staging_poff");
+
+// newButtonAction("staging_just", "2530079", "staging_justfilm");
+// newButtonAction("live_just", "2471584", "staging_justfilm");
+
+// newButtonAction("staging_shorts", "2530082", "staging_shorts");
+// newButtonAction("live_shorts", "2471581", "staging_shorts");
+
+// newButtonAction("staging_industry", "2530078", "staging_industry");
+// newButtonAction("live_industry", "2471583", "staging_industry");
+
+// newButtonAction("staging_kinoff", "2530080", "staging_kinoff");
+// newButtonAction("live_kinoff", "2471585", "staging_kinoff");
 
 
 // newButtonAction("test", "2381766", "DeploymentTest");
