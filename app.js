@@ -1,5 +1,4 @@
 const { App, ExpressReceiver } = require("@slack/bolt");
-const Workflow = require("./startWorkflow.js");
 const newWorkflow = require("./startNewWorkflow.js");
 //require("dotenv").config();
 const bodyParser = require("body-parser");
@@ -22,31 +21,6 @@ const app = new App({
 
 const integrationsChannelId = "C018L2CV5U4"; //siia saada kõik teated
 const failChannel = "C01CACTJW6S"; //siia kõik failinud deploy actonid
-const AWSchannelId = 'C01FEF4QKMH' // siia kõik AWS-ist tulev jma
-
-// see kuulab post päringuid ja
-function listenToAWS() {
-  receiver.router.post("/AWStoSLACK", jsonParser, async (req, res) => {
-    console.log("incoming from AWS....")
-    console.log(req.body)
-    //let status = req.body.status;
-    // Kõik lähevad integrations channelisse
-    try {
-      const result = await app.client.chat.postMessage({
-        token: process.env.SLACK_BOT_TOKEN,
-        channel: AWSchannelId,
-        text: req.body.text,
-      });
-      //console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-    res.status(200).end(); // Responding is important
-  });
-}
-
-listenToAWS()
-
 
 // see kuulab post päringuid ja
 function listenToDeploy() {
@@ -235,25 +209,6 @@ app.event("app_home_opened", async ({
   }
 });
 
-function buttonAction(action_id, workflow, branch) {
-  app.action(action_id, async ({action, ack, client, context, body}) => {
-    await ack();
-    //nupu vajutaja vestluskanal
-    let messagesChannel = action.value;
-    let slackUserId = body.user.id;
-    try {
-      const result = await client.chat.postMessage({
-        channel: messagesChannel,
-        text: `${action.confirm.text.text} käivitatud. Kui on valmis tuleb teadaanne #integrations channelisse`,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    Workflow.Start(workflow, branch);
-    console.log("old buttonAction pressed")
-  });
-}
-
 function newButtonAction(action_id, workflow, branch) {
   app.action(action_id, async ({action, ack, client, context, body}) => {
     await ack();
@@ -268,7 +223,6 @@ function newButtonAction(action_id, workflow, branch) {
     } catch (error) {
       console.error(error);
     }
-    console.log("midagi")
     console.log("outgoing....")
     newWorkflow.Start(workflow, branch, slackUserId, messagesChannel);
   });
@@ -288,22 +242,6 @@ newButtonAction("live_industry", "5828083", "staging_industry");
 
 newButtonAction("staging_kinoff", "5828090", "staging_kinoff");
 newButtonAction("live_kinoff", "5828085", "staging_kinoff");
-
-// newButtonAction("staging_poff", "2530081", "staging_poff");
-// newButtonAction("live_poff", "2471586", "staging_poff");
-
-// newButtonAction("staging_just", "2530079", "staging_justfilm");
-// newButtonAction("live_just", "2471584", "staging_justfilm");
-
-// newButtonAction("staging_shorts", "2530082", "staging_shorts");
-// newButtonAction("live_shorts", "2471581", "staging_shorts");
-
-// newButtonAction("staging_industry", "2530078", "staging_industry");
-// newButtonAction("live_industry", "2471583", "staging_industry");
-
-// newButtonAction("staging_kinoff", "2530080", "staging_kinoff");
-// newButtonAction("live_kinoff", "2471585", "staging_kinoff");
-
 
 // newButtonAction("test", "2381766", "DeploymentTest");
 
