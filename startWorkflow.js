@@ -4,7 +4,7 @@ function StartWorkflow(workflow, branch) {
   var options = {
     method: "POST",
     hostname: "api.github.com",
-    path: `/repos/poff-bnff/web/actions/workflows/${workflow}/dispatches`,
+    path: `/repos/poff-bnff/web2021/actions/workflows/${workflow}/dispatches`,
     headers: {
       "User-Agent": "PostmanRuntime/7.26.3",
       Authorization: "Bearer " + process.env.GITHUB_TOKEN,
