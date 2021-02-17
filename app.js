@@ -268,6 +268,7 @@ function newButtonAction(action_id, workflow, branch) {
     } catch (error) {
       console.error(error);
     }
+    console.log("midagi")
     console.log("outgoing....")
     newWorkflow.Start(workflow, branch, slackUserId, messagesChannel);
   });
