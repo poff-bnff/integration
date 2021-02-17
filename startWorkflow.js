@@ -13,6 +13,8 @@ function StartWorkflow(workflow, branch) {
     maxRedirects: 20
   };
 
+  console.log(options)
+
   var req = https.request(options, function(res) {
     var chunks = [];
 
