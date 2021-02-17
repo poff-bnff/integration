@@ -50,7 +50,7 @@ listenToAWS()
 
 // see kuulab post päringuid ja
 function listenToDeploy() {
-  receiver.router.post("/hook", jsonParser, async (req, res) => {
+  receiver.router.post("slack/hook", jsonParser, async (req, res) => {
     console.log("incoming....")
     console.log(req.body)
     let status = req.body.status;
