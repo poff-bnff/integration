@@ -15,6 +15,7 @@ function StartWorkflow(workflow, branch) {
 
   var req = https.request(options, function(res) {
     var chunks = [];
+    console.log(req)
 
     res.on("data", function(chunk) {
       chunks.push(chunk);
